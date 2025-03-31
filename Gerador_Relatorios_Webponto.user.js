@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Tira Relatorio do WebPonto
-// @version       1.1
+// @version       1.2
 // @description   Gera links de relatórios para todos os usuários
 // @author        Jhonatan Aquino
 // @match         https://webponto.seplag.mt.gov.br/Manutencao/frmGeraFolhaFrequencia.aspx
@@ -20,12 +20,12 @@ function sleep(ms) {
 
 // Adicionar os estilos CSS
 GM_addStyle(`
-    #containerRelatorios {
+    #containerGRW {
         background: rgba(220, 220, 220, 0.58);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         backdrop-filter: blur(6.6px);
         -webkit-backdrop-filter: blur(6.6px);
-        border: 1px solid rgba(214, 214, 214, 0.27);
+        border: 1px solid rgba(214, 214, 214, 0.6);
         border-radius: 20px;
         color: #474e68;
         width: auto;
@@ -40,11 +40,11 @@ GM_addStyle(`
         min-width: 350px;
     }
 
-    #containerRelatorios * {
+    #containerGRW * {
         font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif !important;
     }
 
-    #containerRelatorios a {
+    #containerGRW a {
         color: #666 !important;
         font-size: 8pt;
         font-weight: normal;
@@ -52,7 +52,7 @@ GM_addStyle(`
     }
 
 
-    #containerRelatorios .botaoRelatorio {
+    #containerGRW .botaoRelatorio {
         background: #3982f7;
         color: #fff;
         font-size: 13px;
@@ -65,7 +65,7 @@ GM_addStyle(`
         cursor: pointer;
         transition: all 0.2s ease-in-out;
     }
-      #containerRelatorios  h3 {
+      #containerGRW  h3 {
             font-size: 28px !important;
             font-weight: 500 !important;
             margin-bottom: 15px;
@@ -74,18 +74,18 @@ GM_addStyle(`
             font-variant: normal;
         }
 
-    #containerRelatorios .botaoRelatorio:hover {
+    #containerGRW .botaoRelatorio:hover {
         opacity: 0.9;
         transform: scale(1.02);
     }
 
-    #containerRelatorios .progress-container {
+    #containerGRW .progress-container {
         width: 100%;
         margin: 10px 0;
         display: none;
     }
 
-    #containerRelatorios .progress-bar-wrapper {
+    #containerGRW .progress-bar-wrapper {
         width: 90%;
         background-color: #f0f0f0;
         border-radius: 10px;
@@ -95,7 +95,7 @@ GM_addStyle(`
         margin-left: 5%;
     }
 
-    #containerRelatorios .progress-bar {
+    #containerGRW .progress-bar {
         height: 5px;
         background-color: #4BB543;
         border-radius: 8px;
@@ -105,7 +105,7 @@ GM_addStyle(`
         overflow: hidden;
     }
 
-    #containerRelatorios .progress-bar::after {
+    #containerGRW .progress-bar::after {
         content: "";
         position: absolute;
         top: 0;
@@ -116,7 +116,7 @@ GM_addStyle(`
         animation: glowingEffect 2s infinite linear;
     }
 
-    #containerRelatorios .progress-text {
+    #containerGRW .progress-text {
         text-align: center;
         color: #474e68;
         font-size: 12px;
@@ -127,7 +127,7 @@ GM_addStyle(`
         min-height: 45px;
     }
 
-    #containerRelatorios .progress-text.error {
+    #containerGRW .progress-text.error {
         color: #FF4B40;
         font-weight: bold;
     }
@@ -145,18 +145,18 @@ GM_addStyle(`
         height: 1000px;
     }
 
-    #containerRelatorios .botoes-container {
+    #containerGRW .botoes-container {
         display: flex;
         gap: 10px;
         justify-content: center;
         margin-bottom: 15px;
     }
 
-    #containerRelatorios #btnBaixarRelatorios:hover {
+    #containerGRW #btnBaixarRelatorios:hover {
         background: #2d8f59 !important;
     }
 
-    #containerRelatorios .divlog {
+    #containerGRW .divlog {
         background: rgba(244, 244, 244, 0.58);
         border-radius: 16px;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0);
@@ -169,7 +169,7 @@ GM_addStyle(`
         position: absolute;
         z-index: 2002;
         padding: 5px 15px;
-        top: -45px;
+        bottom: 103%;
         min-height: 25px;
         min-width: 340px;
         font-size: 14px;
@@ -190,7 +190,7 @@ GM_addStyle(`
         background: rgba(0, 0, 0, 0.9);
     }
 
-    #containerRelatorios .divajuda {
+    #containerGRW .divajuda {
         display: none;
         padding: 20px;
         width: 360px;
@@ -202,7 +202,7 @@ GM_addStyle(`
         text-align: justify;
     }
 
-    #containerRelatorios .divajuda h3 {
+    #containerGRW .divajuda h3 {
     font-size: 15pt !important;
   text-align: center;
   line-height: 10px;
@@ -211,50 +211,52 @@ GM_addStyle(`
   font-weight: bold !important;
     }
 
-    #containerRelatorios .divajuda p {
+    #containerGRW .divajuda p {
         margin: 10px 0;
         line-height: 1.5;
+        font-weight:normal !important;
     }
 
-    #containerRelatorios .divajuda ol {
+    #containerGRW .divajuda ol {
         padding-left: 20px;
         margin: 15px 0;
     }
 
-    #containerRelatorios .divajuda li {
+    #containerGRW .divajuda li {
         margin-bottom: 10px;
         line-height: 1.4;
     }
 
-    #containerRelatorios .divajuda b {
+    #containerGRW .divajuda b {
         color: #1d1d1f;
     }
 
-    #containerRelatorios .btnscontrole {
+    #containerGRW .btnscontrole {
         cursor: pointer;
     }
 
-    #containerRelatorios svg:hover path {
+    #containerGRW svg:hover path {
         fill: #087dff !important;
     }
 
-    #containerRelatorios #btnvoltar {
+    #containerGRW #btnvoltar {
         display: none;
         cursor: pointer;
     }
 
-    #containerRelatorios #btnajuda {
+    #containerGRW #btnajuda {
         cursor: pointer;
     }
 
-    #containerRelatorios .conteudo-principal {
-        width: 360px;
+    #containerGRW .conteudo-principal {
+      width: 360px;
+      padding: 20px 20px 0px 20px;
     }
 `);
 
 function criarInterface() {
     const container = document.createElement('div');
-    container.id = 'containerRelatorios';
+    container.id = 'containerGRW';
     container.innerHTML = `
         <div class="divlog" id="divlog"></div>
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" title="Voltar" version="1.1" class="btnscontrole" width="20" height="20" style="margin: 10px;position: absolute;left: 0; bottom: 0; display:none" id="btnvoltar" viewBox="0 0 256 256" xml:space="preserve">
@@ -284,7 +286,7 @@ function criarInterface() {
             <h3>Como usar?</h3>
             <p><b>Para que serve?</b><br>
             Este script automatiza o processo de baixar relatórios de ponto dos funcionários, permitindo baixar os relatórios de todos os usuários de um setor de uma só vez.</p>
-            
+
             <p><b>Como usar:</b></p>
             <ol>
                 <li>Selecione o Ano, Mês e Setor desejados nos campos correspondentes.</li>
@@ -293,7 +295,7 @@ function criarInterface() {
                 <li>Uma barra de progresso indicará o andamento do processo.</li>
                 <li>Os relatórios serão salvos automaticamente na pasta de downloads do seu navegador.</li>
             </ol>
-            
+
             <p><b>Observações importantes:</b></p>
             <p>Certifique-se de que seu navegador não está bloqueando os downloads múltiplos.</p>
         </div>
@@ -316,10 +318,10 @@ function criarInterface() {
     document.getElementById('btnGerarLinks').addEventListener('click', async () => {
         const btnGerarLinks = document.getElementById('btnGerarLinks');
         const progressContainer = container.querySelector('.progress-container');
-        
+
         btnGerarLinks.style.display = 'none';
         progressContainer.style.display = 'block';
-        
+
         try {
             await gerarEBaixarRelatorios();
         } catch (error) {
@@ -339,7 +341,7 @@ function atualizarProgresso(porcentagem, texto, isError = false) {
         progressContainer.style.display = 'block';
         progressBar.style.width = `${porcentagem}%`;
         progressText.textContent = texto;
-        
+
         // Adicionar ou remover classe de erro
         if (isError) {
             progressText.classList.add('error');
@@ -363,7 +365,7 @@ function exibirLog(texto, tempo, cor = "#087EFF") {
 async function gerarEBaixarRelatorios() {
     try {
         const links = [];
-        
+
         // Validações iniciais (20% do progresso)
         if (!cbAno.GetValue()) {
             exibirLog('Por favor, selecione o Ano antes de continuar', 3000, '#FF4B40');
@@ -392,21 +394,21 @@ async function gerarEBaixarRelatorios() {
         }
 
         exibirLog(`Encontrados ${items} usuários`, 2000);
-        
+
         // Gerar links e baixar (80% do progresso dividido pelo número de usuários)
         const progressoPorUsuario = 90 / items; // 90% restantes divididos pelo número de usuários
 
         for (let i = 0; i < items; i++) {
             let usuario = cbUsuarioFolha.GetItem(i);
             const progressoAtual = 5 + (progressoPorUsuario * (i + 1));
-            
+
             // Primeira metade do progresso para gerar o link
-            atualizarProgresso(progressoAtual - (progressoPorUsuario/2), 
+            atualizarProgresso(progressoAtual - (progressoPorUsuario/2),
                 `Gerando link ${i + 1}/${items}\n${usuario.text}`);
 
             // Gerar link
             const formData = new URLSearchParams();
-            
+
             // Campos básicos do ASP.NET
             formData.append('__EVENTTARGET', 'ctl00$MainContent$btGerarFolhaFrequencia');
             formData.append('__EVENTARGUMENT', '');
@@ -459,7 +461,7 @@ async function gerarEBaixarRelatorios() {
             if (!match) {
                 match = text.match(/IDSetor\|4\|([^\|]+)\|.*?IDUsuario\|4\|([^\|]+)/);
             }
-            
+
             if (!match) {
                 console.error('Não foi possível encontrar os IDs para:', usuario.text);
                 console.log('Resposta completa:', text);
@@ -485,7 +487,7 @@ async function gerarEBaixarRelatorios() {
             await sleep(50);
 
             // Segunda metade do progresso para baixar o relatório
-            atualizarProgresso(progressoAtual, 
+            atualizarProgresso(progressoAtual,
                 `Baixando relatório ${i + 1}/${items}\n${usuario.text}`);
 
             // Baixar relatório
@@ -499,21 +501,21 @@ async function gerarEBaixarRelatorios() {
                             if (response.status === 200) {
                                 const blob = new Blob([response.response], { type: 'application/pdf' });
                                 const url = window.URL.createObjectURL(blob);
-                                
+
                                 const a = document.createElement('a');
                                 a.style.display = 'none';
                                 a.href = url;
                                 a.download = `Relatorio_WebPonto_${usuario.text.replace(/[^a-z0-9]/gi, '_').toUpperCase()}.pdf`;
                                 a.target = '_self';
-                                
+
                                 document.body.appendChild(a);
                                 a.click();
-                                
+
                                 requestAnimationFrame(() => {
                                     document.body.removeChild(a);
                                     window.URL.revokeObjectURL(url);
                                 });
-                                
+
                                 exibirLog(`Relatório de ${usuario.text} baixado`, 1000, '#34A568');
                                 setTimeout(resolve, 1000);
                             } else {
@@ -536,7 +538,7 @@ async function gerarEBaixarRelatorios() {
         // Processo finalizado
         atualizarProgresso(100, `Processo concluído!\n${items} relatórios processados`);
         exibirLog('Todos os relatórios foram processados!', 3000, '#34A568');
-        
+
         // Restaurar botão
         document.getElementById('btnGerarLinks').style.display = 'inline-block';
 
@@ -593,22 +595,22 @@ btnExibir.style = `
 btnExibir.onmouseover = () => btnExibir.style.backgroundColor = "#3982F7";
 btnExibir.onmouseout = () => btnExibir.style.backgroundColor = "#474e68";
 btnExibir.onclick = function() {
-    $("#containerRelatorios").slideToggle();
+    $("#containerGRW").slideToggle();
     this.value = this.value === "MINIMIZAR" ? "ABRIR | Gerador de Relatórios" : "MINIMIZAR";
-    setCookie('containerRelatoriosState', this.value === "MINIMIZAR", 30);
+    setCookie('containerGRWState', this.value === "MINIMIZAR", 30);
 };
 
 // Função para inicializar tudo
 function inicializar() {
     criarInterface();
     document.body.appendChild(btnExibir);
-    
+
     // Verificar estado inicial do container
-    let containerState = getCookie('containerRelatoriosState');
+    let containerState = getCookie('containerGRWState');
     if(containerState !== null) {
         containerState = containerState === 'true';
         if(!containerState) {
-            $("#containerRelatorios").hide();
+            $("#containerGRW").hide();
             btnExibir.value = "ABRIR | Gerador de Relatórios";
         }
     }
