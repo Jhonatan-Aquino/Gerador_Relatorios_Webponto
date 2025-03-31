@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Tira Relatorio do WebPonto
-// @version       1.0
+// @version       1.1
 // @description   Gera links de relatórios para todos os usuários
 // @author        Jhonatan Aquino
 // @match         https://webponto.seplag.mt.gov.br/Manutencao/frmGeraFolhaFrequencia.aspx
