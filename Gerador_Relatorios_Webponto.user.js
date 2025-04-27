@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Tira Relatorio do WebPonto
-// @version       1.2
+// @version       1.2.2
 // @description   Gera links de relatórios para todos os usuários
 // @author        Jhonatan Aquino
 // @match         https://webponto.seplag.mt.gov.br/Manutencao/frmGeraFolhaFrequencia.aspx
@@ -13,6 +13,8 @@
 // @downloadURL   https://raw.githubusercontent.com/Jhonatan-Aquino/Gerador_Relatorios_Webponto/main/Gerador_Relatorios_Webponto.user.js
 // ==/UserScript==
 
+
+
 /// Função para esperar um tempo específico (em milissegundos)
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -21,13 +23,13 @@ function sleep(ms) {
 // Adicionar os estilos CSS
 GM_addStyle(`
     #containerGRW {
-        background: rgba(220, 220, 220, 0.58);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(6.6px);
+        background:rgba(237, 237, 237, 0.75);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
         -webkit-backdrop-filter: blur(6.6px);
-        border: 1px solid rgba(214, 214, 214, 0.6);
+        backdrop-filter: blur(6.6px);
+        border:1px solid rgba(214, 214, 214, 0.47);
         border-radius: 20px;
-        color: #474e68;
+        color: #293254;
         width: auto;
         text-align: center;
         font-weight: bold;
@@ -118,7 +120,7 @@ GM_addStyle(`
 
     #containerGRW .progress-text {
         text-align: center;
-        color: #474e68;
+        color: #293254;
         font-size: 12px;
         padding: 5px 0;
         font-weight: normal;
@@ -168,14 +170,16 @@ GM_addStyle(`
         text-align: center;
         position: absolute;
         z-index: 2002;
-        padding: 5px 15px;
-        bottom: 103%;
+        padding: 5px;
+        top: -5px;
         min-height: 25px;
         min-width: 340px;
         font-size: 14px;
         font-weight: normal;
         line-height: 25px;
         display: none;
+        margin-left: -10px;
+        transform: translateY(-100%);
     }
 
     #exibirRelatorios {
@@ -207,7 +211,7 @@ GM_addStyle(`
   text-align: center;
   line-height: 10px;
   margin-bottom: 20px;
-  color: #474e68;
+  color: #293254;
   font-weight: bold !important;
     }
 
@@ -576,7 +580,7 @@ btnExibir.id = 'exibirRelatorios';
 btnExibir.value = 'MINIMIZAR';
 btnExibir.className = 'menuSCT';
 btnExibir.style = `
-    background: #474e68;
+    background: #293254;
     color: #ffffff;
     font-size: 12px;
     border: none;
@@ -593,7 +597,7 @@ btnExibir.style = `
 
 // Configurar eventos do botão
 btnExibir.onmouseover = () => btnExibir.style.backgroundColor = "#3982F7";
-btnExibir.onmouseout = () => btnExibir.style.backgroundColor = "#474e68";
+btnExibir.onmouseout = () => btnExibir.style.backgroundColor = "#293254";
 btnExibir.onclick = function() {
     $("#containerGRW").slideToggle();
     this.value = this.value === "MINIMIZAR" ? "ABRIR | Gerador de Relatórios" : "MINIMIZAR";
